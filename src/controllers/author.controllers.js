@@ -32,10 +32,10 @@ exports.authordata = async (req, res) => {
         if (email) return res.status(400).send({ status: false, msg: "email aleready exist" })
 
         let result = await authorSchema.create(data) //creating document after clearing all the validations
-        return res.status(201).send({ result })
+        return res.status(201).send({ result });
     }
     catch (err) {
-        res.status(500).send({ status: false, data: err.message })
+       return res.status(500).send({ status: false, data: err.message });
     }
 }
 
@@ -61,9 +61,9 @@ exports.loginauthor = async function (req, res) {
                 msg: "User not found",
             });
         let token = jwt.sign({ authorId: author._id.toString() }, 'lama', { expiresIn: '6d' }); //generate jwt token at succesfull login 
-        res.status(200).send({ status: true, msg: "Login Successfull", data: { token } });
+       return res.status(200).send({ status: true, msg: "Login Successfull", data: { token } });
     }
     catch {
-        res.status(500).send({ status: false, msg: err.message })
+      return res.status(500).send({ status: false, msg: err.message });
     }
 };
