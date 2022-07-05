@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const Connectdatabase = () =>{
-mongoose.connect('mongodb+srv://Functionup-cohort:VuU3BF85dJfPhnHa@cluster0.vgm0kds.mongodb.net/Blog-test',{
+mongoose.connect('mongodb+srv://Functionup-cohort:VuU3BF85dJfPhnHa@cluster0.vgm0kds.mongodb.net/Blogproject',{
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then((data) =>{

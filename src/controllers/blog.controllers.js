@@ -147,12 +147,12 @@ exports.blogUpdate = async (req, res) => {
 
 exports.delblog = async (req, res) => {
     try {
-    
-        let id = req.params.blogId
+        let data = req.params
+        let id = data.blogId
         let authorloged = req.authorverfiy //authorverify is present in request that we have set in authorization middleware it contains loggedIn AuthorId
         if (id) {
             let findblog = await blogSchema.findById(id)
-            if (!findblog) return res.status(404).send({ status: false, msg: "no blog found by this BlogID" });
+            if (!findblog) return res.status(404).send({ status: false, msg: `no blog found by this BlogID:${id}` });
 
             if (findblog.authorId != authorloged) {
                 return res.status(403).send({ status: false, data: "Not authorized" })
@@ -172,6 +172,7 @@ exports.delblog = async (req, res) => {
     }
 }
 
+
 //===================================================[API:FOR DELETING BLOG DATA BY QUERY]===========================================================
 
 
@@ -180,7 +181,7 @@ exports.delbyquery = async (req, res) => {
         let data = req.query
         if (Object.keys(data).length <= 0) return res.status(404).send({ status: false, msg: "please enter filter for deletion" })
         let query = {
-            isDeleted: false,
+            isDeleted: true,
             authorId: req.authorverfiy //authorverify is present in request that we have set in authorization middleware it contains loggedIn AuthorId
         }
         if (data.tags) {
@@ -202,7 +203,7 @@ exports.delbyquery = async (req, res) => {
             return res.status(404).send({ status: true, msg: "No such blog present or Not authorized to delete blog" })
         }
         const result = await blogSchema.updateMany(
-            query, { $set: { isDeleted: true, deletedAt: new Date().toLocaleString() } })
+            query, { $set: { isDeleted: false, deletedAt: new Date().toLocaleString() } })
         res.status(200).send({ status: true, msg: "blogs deleted" })
     }
     catch (err) {
